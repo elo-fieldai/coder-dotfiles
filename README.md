@@ -56,3 +56,12 @@ Then add `eugene@<endpoint-id>`, a tab, and a display name as one line in
 
 The host key lives in `~/.config/tern` on the workspace's persistent home volume, so the
 endpoint ID and fingerprint stay the same across restarts.
+
+If `tern remote doctor` reports that the host is not linked to the relay, check whether
+the workspace runs an older Tern than the Mac (`tern --version` on each side). Older
+builds can use a different relay. Update the workspace over any route that still works,
+for example a temporary `coder port-forward <workspace> --udp <port>:8376` tunnel:
+
+```sh
+tern remote update eugene@127.0.0.1:<port>
+```
