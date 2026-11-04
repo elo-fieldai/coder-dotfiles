@@ -54,6 +54,11 @@ tern remote doctor eugene@<endpoint-id>
 Then add `eugene@<endpoint-id>`, a tab, and a display name as one line in
 `~/Library/Application Support/Tern/hosts`.
 
+A running Tern app keeps a connected host on the address it was opened with. After you
+edit `hosts`, run `tern restart` (windows reopen; programs keep running), then stop any old
+`coder port-forward` tunnel to that workspace. Tern stays on a direct address for as long as
+one answers, and switches to the relay within about 20 seconds once none does.
+
 The host key lives in `~/.config/tern` on the workspace's persistent home volume, so the
 endpoint ID and fingerprint stay the same across restarts.
 
