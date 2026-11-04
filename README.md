@@ -25,8 +25,7 @@ The output of each run is in `~/.dotfiles.log` on the workspace.
 Set the workspace's `dotfiles_uri` parameter to `https://github.com/elo-fieldai/coder-dotfiles`
 and start a new build. With Coder v2.36.6, `coder restart --parameter` didn't save the
 value, and `coder update --parameter` skips the build when the workspace is on the latest
-template version. The **Workspace settings → Parameters** page in the Coder UI works, and
-so does the API:
+template version. Creating the start build through the API applies it:
 
 ```sh
 T=$(coder login token)
