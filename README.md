@@ -1,8 +1,8 @@
 # coder-dotfiles
 
-Dotfiles for my Coder workspaces on the `ros-machine` template. The only thing in here
-is `install.sh`, which starts Tern's remote service so the Tern app on
-my Mac can reconnect after a workspace restart.
+Dotfiles for my Coder workspaces on the `ros-machine` template. `install.sh` starts Tern's
+remote service so the Tern app on my Mac can reconnect after a workspace restart, then
+restores the agent environment's system packages with `make install`.
 
 ## Why
 
@@ -14,9 +14,20 @@ and the template doesn't start it again. The `ros-machine` template runs
 ## What `install.sh` does
 
 - Fails with a message if `~/.local/bin/tern` is missing.
-- Does nothing if `tern remote serve` is already running.
-- Otherwise starts `tern remote serve --user` in the background and logs to
+- Starts `tern remote serve --user` in the background unless it is already running, and logs to
   `~/.local/state/tern-serve.log`.
+- Runs `repair-ffmpeg.sh`, then `make install` in `~/repos/agents`. A rebuild drops every system
+  package outside the home volume, so this runs on every boot.
+
+### Why `repair-ffmpeg.sh`
+
+The workspace image ships Ubuntu Pro (ESM) security builds of FFmpeg's libraries but removes the
+Ubuntu Pro access that has the matching packages, so `apt-get install ffmpeg` (and with it
+`make install`) fails with `libavdevice60 : Depends: libavformat60 (= 7:6.1.1-3ubuntu5)`.
+The script moves those libraries to the version Ubuntu's public repositories offer, then
+installs `ffmpeg`. That drops their ESM security fixes. It does nothing once `ffmpeg` is
+installable, so it goes inert when the image is fixed; the image belongs to
+`@field-ai/devprod` (`docker/robotics/` in the monorepo).
 
 The output of each run is in `~/.dotfiles.log` on the workspace.
 
